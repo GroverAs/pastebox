@@ -5,7 +5,6 @@ import ru.sendel.pastebox.exception.NotFoundEntityException;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,7 +29,7 @@ public class PasteBoxRepositoryMap implements PasteBoxRepository {
         LocalDateTime now = LocalDateTime.now();
         return vault.values().stream()
                 .filter(PasteBoxEntity::isPublic)
-                .filter(pasteBoxEntity -> pasteBoxEntity.getLifetime().isBefore(now))
+                .filter(pasteBoxEntity -> pasteBoxEntity.getLifetime().isAfter(now))
                 .sorted(Comparator.comparing(PasteBoxEntity::getId).reversed())
                 .limit(amount)
                 .collect(Collectors.toList());
